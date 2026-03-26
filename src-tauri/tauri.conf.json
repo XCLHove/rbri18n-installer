@@ -1,0 +1,59 @@
+{
+  "$schema": "tauri.conf.schema.json",
+  "productName": "rbri18n-installer",
+  "version": "0.260326.224749",
+  "identifier": "com.xclhove.rbri18n-installer",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:11420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "RBRi18n Installer",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "displayLanguageSelector": true,
+        "languages": [
+          "SimpChinese",
+          "English"
+        ]
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "windows": {
+        "installMode": "basicUi"
+      },
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDg2MTA1Mzc4NzQ2QjhBNTgKUldSWWltdDBlRk1RaGx5S0NCdFFvOUxZRHlBN1JzY0t3dFh5Ly9FWXRsM2xwSlU3b3lVRkh3bVYK",
+      "endpoints": [
+        "https://gitee.com/xclhove/rbri18n-installer/releases/download/latest/latest-gitee.json",
+        "https://github.com/xclhove/rbri18n-installer/releases/latest/download/latest-github.json"
+      ]
+    }
+  }
+}
