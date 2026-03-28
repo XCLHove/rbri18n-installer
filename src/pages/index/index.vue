@@ -5,7 +5,7 @@ import { Asset, GithubReleaseInfo } from '@/pages/index/type.ts'
 import { loadingStart } from '@/utils/LoadingUtils.ts'
 import { log_error } from '@/invoke-apis/file-log.ts'
 import { dayjs, ElMessage, ElMessageBox } from 'element-plus'
-import { localStorageRef } from '@/utils/VueUtils.ts'
+import { localStorageRef, sessionStorageRef } from '@/utils/VueUtils.ts'
 import { checkRBRi18nInstallStatusApi, installRBRi18nApi } from '@/invoke-apis/rbri18n-installer.ts'
 import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { open } from '@tauri-apps/plugin-dialog'
@@ -19,6 +19,9 @@ const currentReleaseInfo = ref<GithubReleaseInfo | null>(null)
 const latestReleaseInfo = ref<GithubReleaseInfo | null>(null)
 const currentReleaseAsserts = computed(() => currentReleaseInfo.value?.assets || [])
 const installStatus = ref<'安装目录不正确' | '已安装' | '未安装' | '未知'>('未知')
+
+const isShowNewVersionDialog = sessionStorageRef('isShowNewVersionDialog', false)
+const newVersionDialogVisible = ref(false)
 
 watch(
   () => githubReleaseInfoList.value,
@@ -128,10 +131,23 @@ const getRBRi18nInfo = () => {
   getGithubReleaseList()
 }
 
+const showNewVersionDialog = () => {
+  if (isShowNewVersionDialog.value) return
+  isShowNewVersionDialog.value = true
+  newVersionDialogVisible.value = true
+}
+
+const copyToClipboard = (text: string) => {
+  writeText(text).then(() => {
+    ElMessage.success('已复制到剪贴板！')
+  })
+}
+
 onMounted(() => {
   checkRBRi18nInstallStatus()
   getLatestReleaseInfo()
   getGithubReleaseList()
+  showNewVersionDialog()
 })
 </script>
 
@@ -183,6 +199,27 @@ onMounted(() => {
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog v-model="newVersionDialogVisible" title="提示">
+      <div class="flex flex-col">
+        <div class="text-wrap">此程序功能已被集成到新项目中，请前往新项目使用。</div>
+        <el-descriptions title="新项目地址" :column="1" border>
+          <el-descriptions-item label="gitee">
+            <el-button link type="primary" @click="copyToClipboard('https://gitee.com/xclhove/rbr-tools')"
+              >(点我复制)
+              <el-text type="primary" style="width: 150px" truncated>https://gitee.com/xclhove/rbr-tools</el-text>
+            </el-button>
+          </el-descriptions-item>
+
+          <el-descriptions-item label="github">
+            <el-button link type="primary" @click="copyToClipboard('https://github.com/xclhove/rbr-tools')"
+              >(点我复制)
+              <el-text type="primary" style="width: 150px" truncated>https://https://github.com/xclhove/rbr-tools</el-text>
+            </el-button>
+          </el-descriptions-item>
+        </el-descriptions>
+      </div>
+    </el-dialog>
   </div>
 </template>
 

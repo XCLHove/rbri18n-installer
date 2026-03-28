@@ -1,7 +1,7 @@
 {
   "$schema": "tauri.conf.schema.json",
   "productName": "rbri18n-installer",
-  "version": "0.260326.224749",
+  "version": "0.260328.140931",
   "identifier": "com.xclhove.rbri18n-installer",
   "build": {
     "beforeDevCommand": "npm run dev",

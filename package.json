@@ -1,7 +1,7 @@
 {
   "name": "rbri18n-installer",
   "private": true,
-  "version": "0.260326.224749",
+  "version": "0.260328.140931",
   "type": "module",
   "scripts": {
     "dev": "vite",
